@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>GSS — Generalised Sky Survey</title>
+<style>
+:root {
+    --bg:#0f1117; --panel:#171a22; --panel2:#202532; --panel3:#11141c;
+    --text:#e7eaf0; --muted:#a9b0c2; --line:#343b4d; --link:#8fc7ff;
+    --accent:#ffd447; --bad:#ff6b6b; --good:#70c1b3;
+}
+* { box-sizing:border-box; }
+body { margin:0; padding:28px; font-family:Arial, Helvetica, sans-serif; background:var(--bg); color:var(--text); max-width:1200px; margin-left:auto; margin-right:auto; }
+h1 { margin:0; font-size:26px; font-weight:normal; }
+h2 { margin:36px 0 14px; font-size:20px; font-weight:normal; border-bottom:1px solid var(--line); padding-bottom:8px; }
+h3 { margin:0 0 10px 0; font-size:15px; font-weight:normal; border-bottom:1px solid var(--line); padding-bottom:6px; }
+a { color:var(--link); text-decoration:none; } a:hover { text-decoration:underline; }
+.subtitle { color:var(--muted); margin:8px 0 4px; font-size:14px; }
+.subtle { color:var(--muted); margin:7px 0 22px; }
+.hero { padding-bottom:14px; border-bottom:1px solid var(--line); margin-bottom:8px; }
+.hero .links { display:flex; gap:18px; flex-wrap:wrap; }
+ul.principles { margin:0; padding-left:20px; line-height:1.7; color:var(--muted); }
+.metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:16px; }
+.metric { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px; }
+.metric-value { font-size:26px; font-weight:bold; } .metric-label { color:var(--muted); font-size:13px; margin-top:4px; }
+.dash-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.dash-grid > div, section { background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:12px; }
+.count-row { position:relative; display:grid; grid-template-columns:1fr auto; gap:10px; padding:7px 0; border-bottom:1px solid #2d3445; overflow:hidden; }
+.count-row i { position:absolute; left:0; bottom:0; height:2px; background:#56617d; }
+.source-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; }
+.skymap-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:16px; margin-bottom:20px; }
+.skymap-item img { width:100%; height:auto; border:1px solid var(--line); border-radius:8px; display:block; }
+.source-card { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; }
+.source-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.source-badge { font-weight:bold; font-size:14px; }
+.source-pct { color:var(--muted); font-size:13px; }
+.tile-bar { height:10px; border-radius:999px; overflow:hidden; display:flex; background:var(--panel3); border:1px solid var(--line); margin-bottom:12px; }
+.tile-bar i { display:block; height:100%; }
+.seg-complete { background:var(--good); }
+.seg-no-coverage { background:#56617d; }
+.seg-pending { background:#3a4257; }
+.seg-failed { background:var(--bad); }
+.legend { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted); margin:8px 0 20px; }
+.legend span { display:inline-flex; align-items:center; gap:5px; }
+.legend i { width:10px; height:10px; border-radius:3px; display:inline-block; }
+table { width:100%; border-collapse:collapse; font-size:14px; }
+th { text-align:left; color:var(--muted); font-weight:normal; padding:6px 8px 6px 0; }
+td { padding:6px 14px 6px 0; border-bottom:1px solid #2d3445; font-family:Consolas, monospace; }
+.compact th { width:55%; }
+footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+p { line-height:1.6; }
+code { background:var(--panel3); padding:1px 5px; border-radius:4px; font-size:13px; }
+.quality-cuts { margin:10px 0 0; padding-left:20px; line-height:1.7; color:var(--muted); font-size:14px; }
+@media (max-width:900px) { .dash-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+    <h1>GSS — Generalised Sky Survey</h1>
+    <div class="links">
+        <a href="about.html">About →</a>
+        <a href="review.html">Object Catalogue →</a>
+    </div>
+</div>
+
+<h2>Summary</h2>
+<p class="subtle">Figures below are generated from the pipeline database (9461.9 MB, last modified 2026-09-07 21:55) at 2026-09-07 22:03.</p>
+
+<div class="metrics">
+    <div class="metric"><div class="metric-value">19,428,136</div><div class="metric-label">Objects scanned</div></div>
+    <div class="metric"><div class="metric-value">2,795,258</div><div class="metric-label">Candidates flagged</div></div>
+    <div class="metric"><div class="metric-value">142,360</div><div class="metric-label">Candidates triaged</div></div>
+    <div class="metric"><div class="metric-value">1.2%</div><div class="metric-label">Tiles resolved</div></div>
+    <div class="metric"><div class="metric-value">8.25</div><div class="metric-label">Mean review score</div></div>
+    <div class="metric"><div class="metric-value">0.37</div><div class="metric-label">Mean artefact risk</div></div>
+</div>
+
+<h2>Sky coverage</h2>
+<p class="subtle">Mollweide projection of scanned sky tiles, coloured by scan status, per source.</p>
+<div class="skymap-grid">
+    <div class="skymap-item"><img src="figures/skymap_gaia.png" alt="gaia tile coverage"></div>
+<div class="skymap-item"><img src="figures/skymap_sdss.png" alt="sdss tile coverage"></div>
+<div class="skymap-item"><img src="figures/skymap_wise.png" alt="wise tile coverage"></div>
+<div class="skymap-item"><img src="figures/skymap_composite.png" alt="composite tile coverage"></div>
+</div>
+
+<h2>Sources</h2>
+<div class="source-grid">
+    
+    <div class="source-card">
+        <div class="source-head">
+            <span class="source-badge">gaia</span>
+            <span class="source-pct">1.2% tiles resolved</span>
+        </div>
+        <div class="tile-bar">
+            <i class="seg-complete" style="width:1.17%"></i><i class="seg-no-coverage" style="width:0.00%"></i><i class="seg-pending" style="width:98.82%"></i><i class="seg-failed" style="width:0.00%"></i>
+        </div>
+        
+        <table class="compact">
+            <tr><th>Objects scanned</th><td>9,463,344</td></tr>
+            <tr><th>Candidates flagged</th><td>1,518,000</td></tr>
+            <tr><th>Candidates triaged</th><td>108,103</td></tr>
+            <tr><th>Tiles complete</th><td>759 / 64,800</td></tr>
+            <tr><th>Tiles no coverage</th><td>0</td></tr>
+            <tr><th>Tiles pending</th><td>64,036</td></tr>
+            <tr><th>Tiles failed</th><td>0</td></tr>
+        </table>
+    </div>
+    
+
+    <div class="source-card">
+        <div class="source-head">
+            <span class="source-badge">sdss</span>
+            <span class="source-pct">1.3% tiles resolved</span>
+        </div>
+        <div class="tile-bar">
+            <i class="seg-complete" style="width:1.18%"></i><i class="seg-no-coverage" style="width:0.09%"></i><i class="seg-pending" style="width:98.74%"></i><i class="seg-failed" style="width:0.00%"></i>
+        </div>
+        
+        <table class="compact">
+            <tr><th>Objects scanned</th><td>1,889,489</td></tr>
+            <tr><th>Candidates flagged</th><td>1,277,258</td></tr>
+            <tr><th>Candidates triaged</th><td>34,257</td></tr>
+            <tr><th>Tiles complete</th><td>763 / 64,800</td></tr>
+            <tr><th>Tiles no coverage</th><td>56</td></tr>
+            <tr><th>Tiles pending</th><td>63,981</td></tr>
+            <tr><th>Tiles failed</th><td>0</td></tr>
+        </table>
+    </div>
+    
+
+    <div class="source-card">
+        <div class="source-head">
+            <span class="source-badge">wise</span>
+            <span class="source-pct">1.1% tiles resolved</span>
+        </div>
+        <div class="tile-bar">
+            <i class="seg-complete" style="width:1.10%"></i><i class="seg-no-coverage" style="width:0.00%"></i><i class="seg-pending" style="width:98.89%"></i><i class="seg-failed" style="width:0.00%"></i>
+        </div>
+        <p class="subtle" style="margin:0 0 10px">Reference dataset only -- not scored by the Isolation Forest, so candidates/triaged are always 0 by design. Reached via a local crossmatch join instead (see Crossmatch coverage below).</p>
+        <table class="compact">
+            <tr><th>Objects scanned</th><td>8,075,303</td></tr>
+            <tr><th>Candidates flagged</th><td>0</td></tr>
+            <tr><th>Candidates triaged</th><td>0</td></tr>
+            <tr><th>Tiles complete</th><td>716 / 64,800</td></tr>
+            <tr><th>Tiles no coverage</th><td>0</td></tr>
+            <tr><th>Tiles pending</th><td>64,083</td></tr>
+            <tr><th>Tiles failed</th><td>0</td></tr>
+        </table>
+    </div>
+    
+</div>
+<div class="legend">
+    <span><i style="background:var(--good)"></i> complete</span>
+    <span><i style="background:#56617d"></i> no coverage</span>
+    <span><i style="background:#3a4257"></i> pending</span>
+    <span><i style="background:var(--bad)"></i> failed</span>
+</div>
+
+<h2>Triage &amp; review</h2>
+<div class="dash-grid">
+    <div>
+        <h3>Triage class distribution</h3>
+        <div class="count-row"><span>mixed_anomaly</span><b>101,444</b><i style="width:71.26%"></i></div><div class="count-row"><span>extreme_colour</span><b>28,970</b><i style="width:20.35%"></i></div><div class="count-row"><span>compact_red</span><b>6,933</b><i style="width:4.87%"></i></div><div class="count-row"><span>artefact_risk</span><b>3,425</b><i style="width:2.41%"></i></div><div class="count-row"><span>possible_lsb</span><b>995</b><i style="width:0.70%"></i></div><div class="count-row"><span>large_diffuse</span><b>432</b><i style="width:0.30%"></i></div><div class="count-row"><span>probable_shred</span><b>161</b><i style="width:0.11%"></i></div>
+    </div>
+    <div>
+        <h3>Human review status</h3>
+        <div class="count-row"><span>unreviewed</span><b>2,795,258</b><i style="width:100.00%"></i></div>
+    </div>
+</div>
+
+<h2>Crossmatch coverage</h2>
+<div class="metrics">
+    <div class="metric"><div class="metric-value">6,912</div><div class="metric-label">Candidates crossmatched</div></div>
+    <div class="metric"><div class="metric-value">2,035</div><div class="metric-label">SIMBAD matches</div></div>
+    <div class="metric"><div class="metric-value">3,261</div><div class="metric-label">NED matches</div></div>
+    <div class="metric"><div class="metric-value">2,790</div><div class="metric-label">Gaia matches</div></div>
+    <div class="metric"><div class="metric-value">2,808</div><div class="metric-label">WISE matches</div></div>
+</div>
+
+<h2>Recent runs</h2>
+<table>
+    <tr><th>Run ID</th><th>Type</th><th>Status</th><th>Started</th><th>Finished</th></tr>
+    <tr><td>4746</td><td>scan_tile_gaia</td><td>running</td><td>2026-09-07 11:55:29</td><td>—</td></tr>
+<tr><td>4745</td><td>scan_tile</td><td>finished</td><td>2026-09-07 11:46:08</td><td>2026-09-07 11:55:14</td></tr>
+<tr><td>4744</td><td>scan_tile_wise</td><td>finished</td><td>2026-09-07 11:45:38</td><td>2026-09-07 11:46:00</td></tr>
+<tr><td>4743</td><td>scan_tile_gaia</td><td>finished</td><td>2026-09-07 11:36:45</td><td>2026-09-07 11:45:26</td></tr>
+<tr><td>4742</td><td>scan_tile</td><td>finished</td><td>2026-09-07 11:27:12</td><td>2026-09-07 11:36:32</td></tr>
+<tr><td>4741</td><td>scan_tile_wise</td><td>finished</td><td>2026-09-07 11:26:45</td><td>2026-09-07 11:27:05</td></tr>
+<tr><td>4740</td><td>scan_tile_gaia</td><td>finished</td><td>2026-09-07 11:17:32</td><td>2026-09-07 11:26:32</td></tr>
+<tr><td>4739</td><td>scan_tile</td><td>finished</td><td>2026-09-07 11:08:07</td><td>2026-09-07 11:17:20</td></tr>
+<tr><td>4738</td><td>scan_tile_wise</td><td>finished</td><td>2026-09-07 11:07:44</td><td>2026-09-07 11:08:00</td></tr>
+<tr><td>4737</td><td>scan_tile_gaia</td><td>finished</td><td>2026-09-07 10:58:08</td><td>2026-09-07 11:07:32</td></tr>
+<tr><td>4736</td><td>scan_tile</td><td>finished</td><td>2026-09-07 10:48:29</td><td>2026-09-07 10:57:53</td></tr>
+<tr><td>4735</td><td>scan_tile_wise</td><td>finished</td><td>2026-09-07 10:47:52</td><td>2026-09-07 10:48:21</td></tr>
+</table>
+
+<footer>
+    GSS — Generalised Sky Survey. See <code>README.md</code> for the full command reference and <code>quickstart.md</code> to run the pipeline yourself.
+</footer>
+
+</body>
+</html>
